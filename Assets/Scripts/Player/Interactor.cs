@@ -18,7 +18,7 @@ public class Interactor : MonoBehaviour
         {
             if (r.collider.gameObject.TryGetComponent(out IInteractable interactObject))
             {
-                interactObject.Interact();
+                interactObject.Interact(this.gameObject);
                 DeactivateText();
             }
         }

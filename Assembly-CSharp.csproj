@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{08343D78-94A3-A32A-51E9-FEE26A9B44F8}</ProjectGuid>
+    <ProjectGuid>{4CE07701-134F-9DD0-F36C-F385BB4D61DF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -63,15 +63,17 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Player\Interactor.cs" />
     <Compile Include="Assets\Scripts\General Classes\HealthManager.cs" />
+    <Compile Include="Assets\Scripts\General Classes\Teleporter.cs" />
     <Compile Include="Assets\Scripts\General Classes\InputManager.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\Player\ControlableManager.cs" />
+    <Compile Include="Assets\Scripts\General Classes\Air.cs" />
     <Compile Include="Assets\Scripts\Global Scripts\Interfaces\Interactable.cs" />
     <Compile Include="Assets\Scripts\General Classes\Mover.cs" />
     <Compile Include="Assets\Scripts\Player\RotateToMousePosition.cs" />
-    <Compile Include="Assets\Scripts\Global Scripts\Air.cs" />
     <Compile Include="Assets\Scripts\Player\Human\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Global Scripts\Interfaces\IControlable.cs" />
+    <Compile Include="Assets\Scripts\General Classes\FollowTransform.cs" />
     <Compile Include="Assets\Scripts\Player\Sub\SubManager.cs" />
     <Compile Include="Assets\Scripts\Global Scripts\Interfaces\IHittable.cs" />
   </ItemGroup>

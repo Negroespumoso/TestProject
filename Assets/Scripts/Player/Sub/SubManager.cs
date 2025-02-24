@@ -6,14 +6,15 @@ public class SubManager : MonoBehaviour, IInteractable, IControlable
     [Header("Components")]
     public Mover mover;
     [SerializeField] private MonoBehaviour subLight;
-    public Transform playerSpawn;
     [SerializeField] private HealthManager health;
     [SerializeField] private Transform camFollow;
+    [SerializeField] public float camZoom;
 
     //Variables
     [HideInInspector] public Vector2 mousePosition;
     [SerializeField] private float swimSpeed;
     [SerializeField] private float fastSwimSpeed;
+    [SerializeField] private float lightTurnSpeed;
 
     //Events
     public event Action onSubenter;
@@ -40,6 +41,10 @@ public class SubManager : MonoBehaviour, IInteractable, IControlable
     {
         return camFollow;
     }
+    public float GetCameraZoom()
+    {
+        return camZoom;
+    }
 
     public void Run()
     {
@@ -50,7 +55,7 @@ public class SubManager : MonoBehaviour, IInteractable, IControlable
         mover.ChangeMovespeed(swimSpeed);
     }
 
-    public void Interact()
+    public void Interact(GameObject interactor)
     {
         onSubenter?.Invoke();
     }

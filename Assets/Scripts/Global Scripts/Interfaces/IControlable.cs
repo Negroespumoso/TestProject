@@ -7,4 +7,5 @@ public interface IControlable
     void Walk();
     void SetUpMover();
     Transform GetCameraFollow();
+    float GetCameraZoom();
 }

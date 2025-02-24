@@ -24,7 +24,8 @@ public class ControlableManager : MonoBehaviour
         SubscribeToInputEvents();
         SubscribeToControllerEvents();
 
-        EnterSub();
+        ChangeCurrentControlable(sub);
+        ExitSub();
     }
 
     private void Update()
@@ -40,7 +41,7 @@ public class ControlableManager : MonoBehaviour
     private void ChangeCurrentControlable(IControlable controlable)
     {
         currentControllable = controlable;
-        cam.SetTarget(currentControllable.GetCameraFollow());
+        cam.SetTarget(currentControllable.GetCameraFollow(), currentControllable.GetCameraZoom());
     }
 
     void EnterSub()
@@ -54,9 +55,9 @@ public class ControlableManager : MonoBehaviour
         if(currentControllable == sub)
         {
             ChangeCurrentControlable(player);
-            player.player.transform.position = sub.playerSpawn.position;
-            player.player.SetActive(true);
+            player.flashlightRotator.gameObject.SetActive(true);
             player.mover.ApplyForce(sub.mover.GetCurrentVelocity());
+            player.followTransform.isActive = false;
         }
     }
     void SubDestruction()

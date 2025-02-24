@@ -3,6 +3,8 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private float defaultSmoothTime;
+    [SerializeField] private Camera mainCamera;
+
     private float smoothTime;
     private Vector3 velocity = new Vector3(0, 0);
 
@@ -24,9 +26,10 @@ public class CameraFollow : MonoBehaviour
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
     }
 
-    public void SetTarget(Transform target)
+    public void SetTarget(Transform target, float zoom)
     {
         followTarget = target;
+        mainCamera.orthographicSize = zoom;
     }
 
     public void SetSmoothTime(float sTime)

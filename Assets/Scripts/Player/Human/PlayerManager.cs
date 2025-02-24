@@ -7,13 +7,16 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
     [Header("Components")]
     public Mover mover;
     [SerializeField] public Interactor interactor;
-    [SerializeField] private RotateToMousePosition flashlightRotator;
+    [SerializeField] public RotateToMousePosition flashlightRotator;
     [SerializeField] private HealthManager health;
     [SerializeField] private Transform camFollow;
+    [SerializeField] private float camZoom;
+    public FollowTransform followTransform;
 
     [Header("Variables")]
 
     public bool isInWater;
+    [SerializeField] float flashlightSpeed;
 
     [Header("Swimming")]
     [SerializeField] float airCapacity;
@@ -43,7 +46,6 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
     private float currentFastSpeed;
 
     //Hidden Variables
-    [HideInInspector] public GameObject player;
     [HideInInspector] public Vector2 mousePosition;
 
 
@@ -53,7 +55,6 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
 
     void Start()
     {
-        player = this.gameObject;
         currentAir = airCapacity;
         SetAirDrainSpeed(1);
         health.onHealthDrained += Die;
@@ -93,13 +94,18 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
     private void UpdateMousePosition(Vector2 currentMosePosition)
     {
         mousePosition = currentMosePosition;
-        flashlightRotator.UpdateLookDirection(mousePosition);
+        flashlightRotator.UpdateLookDirection(mousePosition, flashlightSpeed);
         interactor.UpdateLookDirection(mousePosition);
     }
 
     public Transform GetCameraFollow()
     {
         return camFollow;
+    }
+
+    public float GetCameraZoom()
+    {
+        return camZoom;
     }
 
     public void SwapState(bool inWater)
@@ -196,8 +202,8 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
 
     public void EnterSub()
     {
-        player.SetActive(false);
-        FillAir(airCapacity);
+        flashlightRotator.gameObject.SetActive(false);
+        followTransform.isActive = true;
     }
 
     public void Hit(float damage)
