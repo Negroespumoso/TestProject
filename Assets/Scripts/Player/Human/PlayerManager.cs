@@ -2,19 +2,14 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour, IControlable, IHittable
+public class PlayerManager : Controlable, IHittable
 {
     [Header("Components")]
-    public Mover mover;
     [SerializeField] public Interactor interactor;
     [SerializeField] public RotateToMousePosition flashlightRotator;
-    [SerializeField] private HealthManager health;
-    [SerializeField] private Transform camFollow;
-    [SerializeField] private float camZoom;
     public FollowTransform followTransform;
 
     [Header("Variables")]
-
     public bool isInWater;
     [SerializeField] float flashlightSpeed;
 
@@ -42,17 +37,6 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
     private bool isGrounded;
 
 
-    private float currentSpeed;
-    private float currentFastSpeed;
-
-    //Hidden Variables
-    [HideInInspector] public Vector2 mousePosition;
-
-
-
-    //Events
-    public event Action onDeath;
-
     void Start()
     {
         currentAir = airCapacity;
@@ -62,14 +46,10 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
         SwapState(true);
         SetMaximumAir(airCapacity);
     }
-    public void SetUpMover()
-    {
-        mover.defaultSpeed = swimSpeed;
-        mover.Init();
-    }
 
-    public void UpdateControlable(Vector2 moveDirection, Vector2 currentMosePosition)
+    public override void UpdateControlable(Vector2 moveDirection, Vector2 currentMosePosition)
     {
+        base.UpdateControlable(moveDirection, currentMosePosition);
         UpdateMover(moveDirection);
         UpdateMousePosition(currentMosePosition);
 
@@ -98,26 +78,15 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
         interactor.UpdateLookDirection(mousePosition);
     }
 
-    public Transform GetCameraFollow()
-    {
-        return camFollow;
-    }
-
-    public float GetCameraZoom()
-    {
-        return camZoom;
-    }
-
     public void SwapState(bool inWater)
     {
-        if(inWater)
+        if (inWater)
         {
             isInWater = true;
             mover.rb.gravityScale = 0;
-            mover.rb.linearDamping = 1;
-            currentSpeed = swimSpeed;
-            currentFastSpeed = fastSwimSpeed;
-            mover.ApplyFriction(false, 1f);
+            mover.rb.linearDamping = 1.5f;
+            normalSpeed = swimSpeed;
+            fastSpeed = fastSwimSpeed;
         }
         else
         {
@@ -125,10 +94,10 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
             isInWater = false;
             mover.rb.gravityScale = 1;
             mover.rb.linearDamping = 2;
-            currentSpeed = walkSpeed;
-            currentFastSpeed = runSpeed;
+            normalSpeed = walkSpeed;
+            fastSpeed = runSpeed;
         }
-        mover.ChangeMovespeed(currentSpeed);
+        mover.ChangeMovespeed(normalSpeed);
     }
 
     #region AirControl
@@ -156,19 +125,11 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
     #endregion
 
     #region Space
-    public void Run()
-    {
-        mover.ChangeMovespeed(currentFastSpeed);
-    }
-    public void Walk()
-    {
-        mover.ChangeMovespeed(currentSpeed);
-    }
 
     public void Space()
     {
         if (isInWater) Dash();
-        else Jump();    
+        else Jump();
     }
 
     private void CheckGrounded()
@@ -195,7 +156,7 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
     }
 
     void UpdateDash()
-    {       
+    {
         if (dashCounter > 0) dashCounter -= Time.deltaTime;
     }
     #endregion
@@ -204,15 +165,5 @@ public class PlayerManager : MonoBehaviour, IControlable, IHittable
     {
         flashlightRotator.gameObject.SetActive(false);
         followTransform.isActive = true;
-    }
-
-    public void Hit(float damage)
-    {
-        health.SubstractHealth(damage);
-    }
-
-    private void Die()
-    {
-        onDeath?.Invoke();
     }
 }

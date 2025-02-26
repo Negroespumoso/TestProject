@@ -13,7 +13,7 @@ public class ControlableManager : MonoBehaviour
     [SerializeField] private SubManager sub;
 
     //Variables
-    public IControlable currentControllable;
+    public Controlable currentControllable;
 
     //Events
     public event Action onPlayerDeath;
@@ -24,7 +24,6 @@ public class ControlableManager : MonoBehaviour
         SubscribeToInputEvents();
         SubscribeToControllerEvents();
 
-        ChangeCurrentControlable(sub);
         ExitSub();
     }
 
@@ -38,10 +37,10 @@ public class ControlableManager : MonoBehaviour
         currentControllable.UpdateControlable(inputManager.moveDirection, inputManager.mouseWorldPosition);
     }
 
-    private void ChangeCurrentControlable(IControlable controlable)
+    private void ChangeCurrentControlable(Controlable controlable)
     {
         currentControllable = controlable;
-        cam.SetTarget(currentControllable.GetCameraFollow(), currentControllable.GetCameraZoom());
+        cam.SetTarget(currentControllable.camFollow, currentControllable.camZoom);
     }
 
     void EnterSub()
@@ -70,7 +69,7 @@ public class ControlableManager : MonoBehaviour
     {
         sub.onSubenter += EnterSub;
 
-        sub.onSubDestroy += SubDestruction;
+        sub.onDeath += SubDestruction;
         player.onDeath += onPlayerDeath;
     }
 
@@ -78,6 +77,7 @@ public class ControlableManager : MonoBehaviour
     {
         inputManager.OnPressed_E += player.interactor.TryInteraction;
         inputManager.OnPressed_Q += ExitSub;
+        inputManager.OnPressed_F += currentControllable.SwapLight;
 
         inputManager.OnPressed_Shift += player.Run;
         inputManager.OnPressed_Shift += sub.Run;

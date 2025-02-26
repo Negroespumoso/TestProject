@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour
     //Key Events
     public event Action OnPressed_E;
     public event Action OnPressed_Q;
+    public event Action OnPressed_F;
 
     public event Action OnPressed_Space;
     public event Action OnPressed_Shift;
@@ -32,6 +33,8 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E)) OnPressed_E?.Invoke();
 
         if (Input.GetKeyDown(KeyCode.Q)) OnPressed_Q?.Invoke();
+
+        if (Input.GetKeyDown(KeyCode.F)) OnPressed_F?.Invoke();
 
         if (Input.GetKeyDown(KeyCode.Space)) OnPressed_Space?.Invoke();
 
